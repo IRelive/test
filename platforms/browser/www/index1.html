@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>Hello World</title>
+
+</head>
+
+<body>
+    <h1>Example</h1>
+    <p>getCurrentAcceleration</p>
+    <input type="button" value="获取一次重力感应" class="getA" name="">
+    <div class="con1"></div>
+    <input type="button" value="开启实时重力感应" class="btnStart" name="">
+    <input type="button" value="关闭实时重力感应" class="btnStop" name="">
+    <div class="con2"></div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+        var oGetBtn = document.querySelector('.getA');
+        var oCon1 = document.querySelector('.con1');
+        var oStart = document.querySelector('.btnStart');
+        var oStop = document.querySelector('.btnStop');
+        var oCon2 = document.querySelector('.con2');
+        var watchID = null;//监听重力感应id
+        //获取第一次重力感应
+        oGetBtn.onclick = function(){
+            navigator.accelerometer.getCurrentAcceleration(onSuccess,onError);
+            function onSuccess(acc){
+                oCon1.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
+            }
+            function onError(){
+                alert('onError!');
+            }
+        }
+        //开启实时重力感应
+        oStart.onclick = function(){
+            var options = {frequency:100}//每隔100毫秒更新一次
+            watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
+            function onSuccess(acc){
+                console.log("hah"+acc.x);
+                oCon2.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
+            }
+            function onError(){
+                alert('onError!');
+            }
+        }
+        //关闭实时重力感应
+        oStop.onclick = function(){
+            navigator.accelerometer.clearWatch(watchID);
+        }
+        // // 等待加载PhoneGap   
+        // document.addEventListener("deviceready", onDeviceReady, false); 
+
+        // // PhoneGap加载完毕
+        // function onDeviceReady(){
+        //     // navigator.accelerometer.getCurrentAcceleration(onSuccess,onError);
+        // }
+
+    </script>
+</body>
+</html>

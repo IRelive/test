@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="msapplication-tap-highlight" content="no"/>
+  <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css"/>
+  <style>
+    #div2{
+      width:100px;
+      height:100px;
+      background: #ccc;
+    }
+  </style>
+  <title>Hello World</title>
+</head>
+
+<body>
+<div class="app">
+  <h1>Accelerometer</h1>
+  <input type="button" id="btn1" value="获取一次重力感应">
+  <input type="button" id="btn2" value="开启实时重力感应">
+  <input type="button" id="btn3" value="关闭实时重力感应">
+  <div id="div1"></div>
+  <div id="div2"></div>
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script>
+  function rnd(n,m){return parseInt(n+Math.random()*(m-n))}
+
+  var oDiv=document.querySelector('#div1');
+  var oDiv2=document.querySelector('#div2');
+  var oBtn1=document.querySelector('#btn1');
+  var watchID=null;
+
+  oBtn1.onclick=function(){
+    function onSuccess(acc) {
+      oDiv.innerHTML='x:'+acc.x+'/y:'+acc.y+'/z:'+acc.z;
+    }
+    function onError() {
+      alert('onError!');
+    }
+
+    navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+  };
+  var oBtn2=document.querySelector('#btn2');
+  oBtn2.onclick=function(){
+    function onSuccess(acc) {
+      console.log("hehe"+acc.x);
+      oDiv.innerHTML='x:'+acc.x+'/y:'+acc.y+'/z:'+acc.z;
+      if(
+        Math.abs(acc.x)>20||
+        Math.abs(acc.y)>20||
+        Math.abs(acc.z)>20
+      ){
+        navigator.notification.beep(1);
+        oDiv2.style.background='rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+      }
+    }
+
+    function onError() {
+      alert('onError!');
+    }
+
+    var options = { frequency: 100 };  // 每隔3秒更新一次
+
+    watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+  };
+
+  var oBtn3=document.querySelector('#btn3');
+  oBtn3.onclick=function(){
+    navigator.accelerometer.clearWatch(watchID);
+  };
+
+</script>
+</body>
+
+</html>
