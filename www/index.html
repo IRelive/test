@@ -57,7 +57,8 @@
             watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
             function onSuccess(acc){
                 oCon2.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
-                if(Math.abs(acc.x) > 20 || Math.abs(acc.y) > 20 || Math.abs(acc.z)  > 20){
+                if(Math.abs(acc.x) > 15 || Math.abs(acc.y) > 15 || Math.abs(acc.z)  > 15){
+                    navigator.notification.beep(1);
                     oColorBox.style.background = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
                 }
             }
