@@ -55,7 +55,7 @@
         
         //开启实时重力感应
         oStart.onclick = function(){
-            var options = {frequency:100}//每隔100毫秒更新一次
+            var options = {frequency:1000}//每隔100毫秒更新一次
             watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
             function onSuccess(acc){
                 oCon2.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
