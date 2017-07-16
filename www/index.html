@@ -8,7 +8,14 @@
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Hello World</title>
+    <style type="text/css" media="screen">
+        *{margin: 0; padding: 0}
+        .colorBox{
+            width: 100px;
+            height: 100px;
 
+        }
+    </style>
 </head>
 
 <body>
@@ -19,19 +26,27 @@
     <input type="button" value="开启实时重力感应" class="btnStart" name="">
     <input type="button" value="关闭实时重力感应" class="btnStop" name="">
     <div class="con2"></div>
+    <div class="colorBox"></div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
+        function rnd(n, m){
+            return Math.floor(Math.random() * (m-n) + n);
+        }
         var oGetBtn = document.querySelector('.getA');
         var oCon1 = document.querySelector('.con1');
         var oStart = document.querySelector('.btnStart');
         var oStop = document.querySelector('.btnStop');
         var oCon2 = document.querySelector('.con2');
+        var oColorBox = document.querySelector('.colorBox');
         var watchID = null;//监听重力感应id
         //获取第一次重力感应
         oGetBtn.onclick = function(){
             navigator.accelerometer.getCurrentAcceleration(onSuccess,onError);
             function onSuccess(acc){
                 oCon1.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
+                if(Math.abs(acc.x) > 20 || Math.abs(acc.y) > 20 || Math.abs(acc.z)  > 20){
+                    oColorBox.style.background = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+                }
             }
             function onError(){
                 alert('onError!');
@@ -43,8 +58,8 @@
             var options = {frequency:100}//每隔100毫秒更新一次
             watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
             function onSuccess(acc){
-                console.log("hah"+acc.x);
                 oCon2.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
+
             }
             function onError(){
                 alert('onError!');
