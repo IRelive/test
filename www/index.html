@@ -44,9 +44,7 @@
             navigator.accelerometer.getCurrentAcceleration(onSuccess,onError);
             function onSuccess(acc){
                 oCon1.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
-                if(Math.abs(acc.x) > 20 || Math.abs(acc.y) > 20 || Math.abs(acc.z)  > 20){
-                    oColorBox.style.background = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
-                }
+                
             }
             function onError(){
                 alert('onError!');
@@ -59,7 +57,9 @@
             watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
             function onSuccess(acc){
                 oCon2.innerHTML = 'x:'+acc.x+',y:'+acc.y+',z:'+acc.z;
-
+                if(Math.abs(acc.x) > 20 || Math.abs(acc.y) > 20 || Math.abs(acc.z)  > 20){
+                    oColorBox.style.background = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+                }
             }
             function onError(){
                 alert('onError!');
